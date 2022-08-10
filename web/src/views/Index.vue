@@ -140,6 +140,12 @@
         <div class="setting-wrapper">
           <div class="setting-title">
             后端设定
+            <span
+              class="right-text"
+              v-if="isTauri"
+              @click="$router.push({ path: '/setting' })"
+              >设置</span
+            >
           </div>
           <div class="setting-item">
             <el-tag
@@ -489,7 +495,7 @@
       class="shelf-wrapper"
       :class="isWebApp && !isNight ? 'status-bar-light-bg' : ''"
       ref="shelfWrapper"
-      @click="showNavigation = false"
+      @click="hideMenu"
     >
       <div class="shelf-title">
         <i
@@ -1088,7 +1094,9 @@ export default {
       addUserForm: {
         username: "",
         password: ""
-      }
+      },
+
+      isTauri: window.__TAURI__
     };
   },
   watch: {
@@ -2002,6 +2010,11 @@ export default {
           this.$message.error("删除书源失败 " + (error && error.toString()));
         }
       );
+    },
+    hideMenu() {
+      if (this.$store.getters.isNormalPage && this.collapseMenu) {
+        this.showNavigation = false;
+      }
     },
     toggleMenu() {
       if (this.collapseMenu) {
